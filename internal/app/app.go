@@ -41,25 +41,26 @@ func Run() {
 	//if err != nil {
 	//	panic(err.Error())
 	//}
+	//--------------------------------------------R ROUTER--------------------------------------------------------------
+	r := chi.NewRouter()
 	//-------------------------------------------MAIN ROUTER------------------------------------------------------------
-	mainRouter := chi.NewRouter()
-
-	mainRouter.Use(cors.Handler(cors.Options{
+	apiV1Router := chi.NewRouter()
+	apiV1Router.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type", "Set-Cookie"},
 		ExposedHeaders:   []string{"Link"},
 		AllowCredentials: true,
 	}))
-	mainRouter.Use(middleware.RequestID)
-	mainRouter.Use(middleware.Logger)
-	mainRouter.Use(middleware.Recoverer)
-	mainRouter.Use(middleware.URLFormat)
-	mainRouter.Use(logger.NewLogger(log))
-
+	apiV1Router.Use(middleware.RequestID)
+	apiV1Router.Use(middleware.Logger)
+	apiV1Router.Use(middleware.Recoverer)
+	apiV1Router.Use(middleware.URLFormat)
+	apiV1Router.Use(logger.NewLogger(log))
 	//------------------------------------------------------------------------------------------------------------------
+	r.Mount("/api/v1", apiV1Router)
 
-	err := http.ListenAndServe(cfg.HTTPServer.Host+":"+cfg.HTTPServer.Port, mainRouter)
+	err := http.ListenAndServe(cfg.HTTPServer.Host+":"+cfg.HTTPServer.Port, r)
 	if err != nil {
 		log.Error(err.Error())
 	}
