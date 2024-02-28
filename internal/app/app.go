@@ -24,6 +24,9 @@ const (
 )
 
 // TODO: удаление неактивных в течение 60 дней пользователей
+// TODO: исправить логи
+// TODO: env, config, build
+// TODO: написать client
 
 func Run() {
 	config.Init("./configs/config.yaml")
