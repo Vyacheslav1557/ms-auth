@@ -15,7 +15,7 @@ func New(dsn string) (*Storage, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = db.AutoMigrate(&models.Expression{}, &models.Cookie{})
+	err = db.AutoMigrate(&models.User{})
 	if err != nil {
 		return nil, err
 	}
