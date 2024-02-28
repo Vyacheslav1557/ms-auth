@@ -2,10 +2,12 @@ package models
 
 import "gorm.io/gorm"
 
+// FIXME: добавить поле Salt
+
 type User struct {
 	gorm.Model
-	ID             uint   `gorm:"primarykey"`
-	Username       string `gorm:"not null"`
-	HashedPassword string `gorm:"not null"`
-	LastLoginAt    int64
+	ID              uint   `gorm:"primarykey"`
+	Username        string `gorm:"not null; unique"`
+	HashedPassword  string `gorm:"not null"`
+	RefreshTokenJTI *string
 }
