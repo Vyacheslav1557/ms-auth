@@ -6,10 +6,13 @@ import (
 	"os"
 )
 
+var configInstance *Config
+
 type Config struct {
-	Env        string `yaml:"env" env-default:"development"`
+	Env        string `yaml:"env" env-default:"dev"`
 	HTTPServer `yaml:"http_server"`
 	Storage    `yaml:"storage"`
+	JWT        `yaml:"jwt"`
 }
 
 type HTTPServer struct {
@@ -26,17 +29,32 @@ type Storage struct {
 	SSLmode  string `yaml:"sslmode" env-default:"require"`
 }
 
-func MustLoad(path string) *Config {
+type JWT struct {
+	Secret string `yaml:"secret" required:"true"`
+}
+
+func mustLoad(path string) {
 	if _, err := os.Stat(path); err != nil {
-		log.Fatalf("error opening config file: %s", err)
+		log.Fatalf("error opening Config file: %s", err)
 	}
 
 	var cfg Config
 
 	err := cleanenv.ReadConfig(path, &cfg)
 	if err != nil {
-		log.Fatalf("error reading config file: %s", err)
+		log.Fatalf("error reading Config file: %s", err)
 	}
 
-	return &cfg
+	configInstance = &cfg
+}
+
+func Init(path string) {
+	mustLoad(path)
+}
+
+func Cfg() Config {
+	if configInstance == nil {
+		log.Fatalf("config was not initialized")
+	}
+	return *configInstance
 }
