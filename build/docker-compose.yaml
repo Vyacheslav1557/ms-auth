@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+#    expose:
+#      - "5000"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: supersecretpassword
+#
+#  auth:
+#    restart: always
+#    depends_on:
+#      - postgres
+#    ports:
+#      - "8090:8090"
+#    build:
+#      context: C:\Users\Roma\GolandProjects\ms-auth
+#      dockerfile: C:\Users\Roma\GolandProjects\ms-auth\build\Dockerfile
