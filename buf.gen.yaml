@@ -1,0 +1,18 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: ./pkg/go/gen
+plugins:
+  - name: go
+    out: pkg/go/gen
+    opt: paths=source_relative
+  - name: go-grpc
+    out: pkg/go/gen
+    opt: paths=source_relative
+  - plugin: buf.build/protocolbuffers/pyi:v26.0
+    out: pkg/py/gen
+  - plugin: buf.build/protocolbuffers/python:v26.0
+    out: pkg/py/gen
+  - plugin: buf.build/grpc/python:v1.62.1
+    out: pkg/py/gen

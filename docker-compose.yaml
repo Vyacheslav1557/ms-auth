@@ -1,0 +1,61 @@
+version: '3'
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  db:
+
+services:
+  auth-service:
+    build:
+      dockerfile: ./Dockerfile
+    ports:
+      - "8090:8090"
+    depends_on:
+      - postgres
+      - migrate
+    networks:
+      - my-network
+    restart: unless-stopped
+    environment:
+      ENV: dev
+      PORT: 8090
+      DSN: "host=postgres port=5432 user=postgres password=supersecretpassword dbname=postgres sslmode=disable"
+      JWT_SECRET: GPfYIQUkGexayJilJyz6brI0mthApP3HMUG
+      JWT_MAX_AGE: 40m
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 50M
+
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecretpassword
+    networks:
+      - my-network
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U postgres -d postgres
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  migrate:
+    image: migrate/migrate
+    networks:
+      - my-network
+    volumes:
+      - ./migrations:/migrations
+    command: [ "-path", "/migrations", "-database",  "postgres://postgres:supersecretpassword@postgres:5432/postgres?sslmode=disable", "up" ]
+    depends_on:
+      postgres:
+        condition: service_healthy

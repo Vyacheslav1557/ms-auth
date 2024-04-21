@@ -1,8 +1,7 @@
-package passwordservice
+package lib
 
 import (
 	"golang.org/x/crypto/bcrypt"
-	"ms-auth/internal/lib/random"
 )
 
 func GenerateFromPassword(password string) (string, error) {
@@ -15,8 +14,4 @@ func GenerateFromPassword(password string) (string, error) {
 
 func CompareHashAndPassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
-}
-
-func GenerateRandomPassword() string {
-	return random.RandomString(3) + "-" + random.RandomString(3) + "-" + random.RandomString(3)
 }

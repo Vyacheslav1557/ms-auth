@@ -2,59 +2,32 @@ package config
 
 import (
 	"github.com/ilyakaznacheev/cleanenv"
-	"log"
-	"os"
+	"log/slog"
+	"time"
 )
 
 var configInstance *Config
 
 type Config struct {
-	Env        string `yaml:"env" env-default:"dev"`
-	HTTPServer `yaml:"http_server"`
-	Storage    `yaml:"storage"`
-	JWT        `yaml:"jwt"`
+	Env       string        `env:"ENV" env-required:"true"`
+	Port      string        `env:"PORT" env-required:"true"`
+	DSN       string        `env:"DSN" env-required:"true"`
+	JWTSecret string        `env:"JWT_SECRET" env-required:"true"`
+	JWTMaxAge time.Duration `env:"JWT_MAX_AGE" env-required:"true"`
 }
 
-type HTTPServer struct {
-	Host string `yaml:"host" env-default:"0.0.0.0"`
-	Port string `yaml:"port" env-default:"8090"`
-}
-
-type Storage struct {
-	Host     string `yaml:"host" env-default:"localhost"`
-	Port     string `yaml:"port" env-default:"5432"`
-	User     string `yaml:"user" required:"true"`
-	Password string `yaml:"password" required:"true"`
-	DBname   string `yaml:"dbname" required:"true"`
-	SSLmode  string `yaml:"sslmode" env-default:"require"`
-}
-
-type JWT struct {
-	Secret string `yaml:"secret" required:"true"`
-}
-
-func mustLoad(path string) {
-	if _, err := os.Stat(path); err != nil {
-		log.Fatalf("error opening Config file: %s", err)
-	}
-
-	var cfg Config
-
-	err := cleanenv.ReadConfig(path, &cfg)
+func SetupCfg() {
+	cfg := Config{}
+	err := cleanenv.ReadEnv(&cfg)
 	if err != nil {
-		log.Fatalf("error reading Config file: %s", err)
+		slog.Error("error reading Config: %s", err)
 	}
-
 	configInstance = &cfg
-}
-
-func Init(path string) {
-	mustLoad(path)
 }
 
 func Cfg() Config {
 	if configInstance == nil {
-		log.Fatalf("config was not initialized")
+		slog.Error("config was not initialized")
 	}
 	return *configInstance
 }
