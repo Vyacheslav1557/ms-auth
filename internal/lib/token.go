@@ -1,8 +1,8 @@
 package lib
 
 import (
+	"github.com/Vyacheslav1557/ms-auth/internal/config"
 	"github.com/golang-jwt/jwt"
-	"ms-auth/internal/config"
 )
 
 func NewToken(claims jwt.StandardClaims) (string, error) {

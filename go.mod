@@ -1,4 +1,4 @@
-module ms-auth
+module github.com/Vyacheslav1557/ms-auth
 
 go 1.21
 

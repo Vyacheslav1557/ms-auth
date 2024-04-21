@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/Vyacheslav1557/ms-auth/internal/app"
+	"github.com/Vyacheslav1557/ms-auth/internal/config"
+	"github.com/Vyacheslav1557/ms-auth/internal/services"
+	"github.com/Vyacheslav1557/ms-auth/internal/storage"
 	"log/slog"
-	"ms-auth/internal/app"
-	"ms-auth/internal/config"
-	"ms-auth/internal/services"
-	"ms-auth/internal/storage"
 	"os"
 	"os/signal"
 	"syscall"

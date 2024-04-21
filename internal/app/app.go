@@ -2,10 +2,10 @@ package app
 
 import (
 	"fmt"
+	"github.com/Vyacheslav1557/ms-auth/internal/services"
+	authgrpc "github.com/Vyacheslav1557/ms-auth/internal/transport"
 	"google.golang.org/grpc"
 	"log/slog"
-	"ms-auth/internal/services"
-	authgrpc "ms-auth/internal/transport"
 	"net"
 )
 

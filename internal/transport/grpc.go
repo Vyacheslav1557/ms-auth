@@ -3,13 +3,13 @@ package authgrpc
 import (
 	"context"
 	"errors"
+	"github.com/Vyacheslav1557/ms-auth/internal/services"
+	"github.com/Vyacheslav1557/ms-auth/pkg/go/gen"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"log/slog"
-	"ms-auth/internal/services"
-	"ms-auth/pkg/go/gen"
 )
 
 type Auth interface {

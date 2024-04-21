@@ -2,12 +2,12 @@ package services
 
 import (
 	"errors"
+	"github.com/Vyacheslav1557/ms-auth/internal/config"
+	"github.com/Vyacheslav1557/ms-auth/internal/lib"
+	"github.com/Vyacheslav1557/ms-auth/internal/models"
+	"github.com/Vyacheslav1557/ms-auth/internal/storage"
 	"github.com/golang-jwt/jwt"
 	"log/slog"
-	"ms-auth/internal/config"
-	"ms-auth/internal/lib"
-	"ms-auth/internal/models"
-	"ms-auth/internal/storage"
 	"strconv"
 	"time"
 )
